@@ -1,4 +1,4 @@
 
-./simulation/target/
+simulation/target/
 
-./renderer/__pycache__/
+enderer/__pycache__/

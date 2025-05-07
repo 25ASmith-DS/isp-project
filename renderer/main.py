@@ -1,4 +1,5 @@
 import pygame
+from time import time_ns as time
 import json
 
 
@@ -6,6 +7,9 @@ class Duration:
     def __init__(self, obj: dict):
         self.secs = obj['secs']
         self.nanos = obj['nanos']
+
+    def seconds(self):
+        return self.secs + self.nanos / (10 ** 9)
 
 
 class SimState:
@@ -22,10 +26,11 @@ class SimOutput:
         self.delta_time = Duration(obj['delta_time'])
 
 
-path = "tests/basic_goto.sim"
+path = "../simulation/tests/basic_goto.sim"
 with open(path, 'r') as file:
     s = file.read()
 simulation_output = SimOutput(json.loads(s))
+sim_dt = simulation_output.delta_time
 
 if __name__ == "__main__":
     SCREEN_WIDTH = 800
@@ -37,7 +42,10 @@ if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    camera = pygame.Rect(0.0, 0.0, SCREEN_WIDTH, SCREEN_HEIGHT)
+    camera = pygame.Rect(
+        WORLD_WIDTH / 2, WORLD_HEIGHT / 2,
+        SCREEN_WIDTH, SCREEN_HEIGHT
+    )
     camera_surface = pygame.Surface(camera.size)
 
     aspect_ratio = SCREEN_WIDTH / SCREEN_HEIGHT
@@ -47,6 +55,7 @@ if __name__ == "__main__":
 
     quit = False
     frame = 0
+    start_time = time()
     while not quit:
         delta_time = clock.get_time() / 1000.0
         if delta_time > 1:
@@ -56,8 +65,16 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 quit = True
 
-        pressed = pygame.key.get_pressed()
+        elapsed = (time() - start_time) / 1_000_000_000
 
+        step_index = round(elapsed / sim_dt.seconds())
+        print(step_index)
+
+        if step_index < len(simulation_output.steps):
+            step = simulation_output.steps[step_index]
+            # TODO some shit here
+
+        pressed = pygame.key.get_pressed()
         if pressed[pygame.K_a]:
             camera.x -= camera.width * 0.5 * delta_time
         if pressed[pygame.K_d]:
@@ -93,3 +110,6 @@ if __name__ == "__main__":
         pygame.display.update()
 
         clock.tick(60)
+        frame += 1
+
+    pygame.quit()
