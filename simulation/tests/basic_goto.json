@@ -1,0 +1,33 @@
+{
+  "instructions": {
+    "points": [
+      {
+        "GotoPoint": [
+          5.0,
+          5.0
+        ]
+      },
+      "BladeOn",
+      {
+        "GotoPoint": [
+          -5.0,
+          15.0
+        ]
+      },
+      "BladeOff",
+      {
+        "GotoPoint": [
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "sim_length": {
+    "Steps": 100
+  },
+  "delta_time": {
+    "secs": 0,
+    "nanos": 10000000
+  }
+}
