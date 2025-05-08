@@ -1,5 +1,5 @@
 {
-  "steps": [
+  "states": [
     {
       "robot_x": 0.0,
       "robot_y": 0.0,
@@ -9,602 +9,1102 @@
     {
       "robot_x": 0.0471238898038469,
       "robot_y": 0.0,
-      "robot_theta": -0.0004803291267624483,
-      "debug": "Idle"
+      "robot_theta": -0.02454369260617026,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.0942477796076938,
       "robot_y": 0.0,
-      "robot_theta": -0.0009606582535248966,
-      "debug": "Idle"
+      "robot_theta": -0.04908738521234052,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.1413716694115407,
       "robot_y": 0.0,
-      "robot_theta": -0.001440987380287345,
-      "debug": "Idle"
+      "robot_theta": -0.07363107781851078,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.1884955592153876,
       "robot_y": 0.0,
-      "robot_theta": -0.0019213165070497932,
-      "debug": "Idle"
+      "robot_theta": -0.09817477042468103,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.2356194490192345,
       "robot_y": 0.0,
-      "robot_theta": -0.0024016456338122414,
-      "debug": "Idle"
+      "robot_theta": -0.1227184630308513,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.2827433388230814,
       "robot_y": 0.0,
-      "robot_theta": -0.00288197476057469,
-      "debug": "Idle"
+      "robot_theta": -0.14726215563702155,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.3298672286269283,
       "robot_y": 0.0,
-      "robot_theta": -0.0033623038873371383,
-      "debug": "Idle"
+      "robot_theta": -0.1718058482431918,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.3769911184307752,
       "robot_y": 0.0,
-      "robot_theta": -0.0038426330140995868,
-      "debug": "Idle"
+      "robot_theta": -0.19634954084936207,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.4241150082346221,
       "robot_y": 0.0,
-      "robot_theta": -0.004322962140862035,
-      "debug": "Idle"
+      "robot_theta": -0.22089323345553233,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.471238898038469,
       "robot_y": 0.0,
-      "robot_theta": -0.004803291267624484,
-      "debug": "Idle"
+      "robot_theta": -0.2454369260617026,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.5183627878423159,
       "robot_y": 0.0,
-      "robot_theta": -0.005283620394386932,
-      "debug": "Idle"
+      "robot_theta": -0.2699806186678728,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.5654866776461628,
       "robot_y": 0.0,
-      "robot_theta": -0.005763949521149381,
-      "debug": "Idle"
+      "robot_theta": -0.2945243112740431,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.6126105674500096,
       "robot_y": 0.0,
-      "robot_theta": -0.006244278647911829,
-      "debug": "Idle"
+      "robot_theta": -0.3190680038802134,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.6597344572538565,
       "robot_y": 0.0,
-      "robot_theta": -0.0067246077746742775,
-      "debug": "Idle"
+      "robot_theta": -0.3436116964863837,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.7068583470577033,
       "robot_y": 0.0,
-      "robot_theta": -0.007204936901436726,
-      "debug": "Idle"
+      "robot_theta": -0.36815538909255396,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.7539822368615502,
       "robot_y": 0.0,
-      "robot_theta": -0.007685266028199174,
-      "debug": "Idle"
+      "robot_theta": -0.39269908169872425,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.801106126665397,
       "robot_y": 0.0,
-      "robot_theta": -0.008165595154961623,
-      "debug": "Idle"
+      "robot_theta": -0.41724277430489454,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.8482300164692439,
       "robot_y": 0.0,
-      "robot_theta": -0.00864592428172407,
-      "debug": "Idle"
+      "robot_theta": -0.4417864669110648,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.8953539062730907,
       "robot_y": 0.0,
-      "robot_theta": -0.009126253408486518,
-      "debug": "Idle"
+      "robot_theta": -0.4663301595172351,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.9424777960769376,
       "robot_y": 0.0,
-      "robot_theta": -0.009606582535248966,
-      "debug": "Idle"
+      "robot_theta": -0.4908738521234054,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 0.9896016858807845,
       "robot_y": 0.0,
-      "robot_theta": -0.010086911662011413,
-      "debug": "Idle"
+      "robot_theta": -0.5154175447295757,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.0367255756846314,
       "robot_y": 0.0,
-      "robot_theta": -0.01056724078877386,
-      "debug": "Idle"
+      "robot_theta": -0.539961237335746,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.0838494654884783,
       "robot_y": 0.0,
-      "robot_theta": -0.011047569915536308,
-      "debug": "Idle"
+      "robot_theta": -0.5645049299419163,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.1309733552923251,
       "robot_y": 0.0,
-      "robot_theta": -0.011527899042298756,
-      "debug": "Idle"
+      "robot_theta": -0.5890486225480865,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.178097245096172,
       "robot_y": 0.0,
-      "robot_theta": -0.012008228169061204,
-      "debug": "Idle"
+      "robot_theta": -0.6135923151542568,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.2252211349000188,
       "robot_y": 0.0,
-      "robot_theta": -0.012488557295823651,
-      "debug": "Idle"
+      "robot_theta": -0.6381360077604271,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.2723450247038657,
       "robot_y": 0.0,
-      "robot_theta": -0.012968886422586099,
-      "debug": "Idle"
+      "robot_theta": -0.6626797003665974,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.3194689145077125,
       "robot_y": 0.0,
-      "robot_theta": -0.013449215549348546,
-      "debug": "Idle"
+      "robot_theta": -0.6872233929727677,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.3665928043115594,
       "robot_y": 0.0,
-      "robot_theta": -0.013929544676110994,
-      "debug": "Idle"
+      "robot_theta": -0.711767085578938,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.4137166941154062,
       "robot_y": 0.0,
-      "robot_theta": -0.014409873802873441,
-      "debug": "Idle"
+      "robot_theta": -0.7363107781851083,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.460840583919253,
       "robot_y": 0.0,
-      "robot_theta": -0.014890202929635889,
-      "debug": "Idle"
+      "robot_theta": -0.7608544707912785,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.5079644737231,
       "robot_y": 0.0,
-      "robot_theta": -0.015370532056398337,
-      "debug": "Idle"
+      "robot_theta": -0.7853981633974488,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.5550883635269468,
       "robot_y": 0.0,
-      "robot_theta": -0.015850861183160786,
-      "debug": "Idle"
+      "robot_theta": -0.8099418560036191,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.6022122533307936,
       "robot_y": 0.0,
-      "robot_theta": -0.016331190309923235,
-      "debug": "Idle"
+      "robot_theta": -0.8344855486097894,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.6493361431346405,
       "robot_y": 0.0,
-      "robot_theta": -0.016811519436685685,
-      "debug": "Idle"
+      "robot_theta": -0.8590292412159597,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.6964600329384874,
       "robot_y": 0.0,
-      "robot_theta": -0.017291848563448134,
-      "debug": "Idle"
+      "robot_theta": -0.88357293382213,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.7435839227423342,
       "robot_y": 0.0,
-      "robot_theta": -0.017772177690210583,
-      "debug": "Idle"
+      "robot_theta": -0.9081166264283003,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.790707812546181,
       "robot_y": 0.0,
-      "robot_theta": -0.018252506816973033,
-      "debug": "Idle"
+      "robot_theta": -0.9326603190344706,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.837831702350028,
       "robot_y": 0.0,
-      "robot_theta": -0.018732835943735482,
-      "debug": "Idle"
+      "robot_theta": -0.9572040116406408,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.8849555921538748,
       "robot_y": 0.0,
-      "robot_theta": -0.01921316507049793,
-      "debug": "Idle"
+      "robot_theta": -0.9817477042468111,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.9320794819577216,
       "robot_y": 0.0,
-      "robot_theta": -0.01969349419726038,
-      "debug": "Idle"
+      "robot_theta": -1.0062913968529814,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 1.9792033717615685,
       "robot_y": 0.0,
-      "robot_theta": -0.02017382332402283,
-      "debug": "Idle"
+      "robot_theta": -1.0308350894591516,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.0263272615654153,
       "robot_y": 0.0,
-      "robot_theta": -0.02065415245078528,
-      "debug": "Idle"
+      "robot_theta": -1.0553787820653218,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.0734511513692624,
       "robot_y": 0.0,
-      "robot_theta": -0.02113448157754773,
-      "debug": "Idle"
+      "robot_theta": -1.079922474671492,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.1205750411731095,
       "robot_y": 0.0,
-      "robot_theta": -0.021614810704310178,
-      "debug": "Idle"
+      "robot_theta": -1.1044661672776621,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.1676989309769565,
       "robot_y": 0.0,
-      "robot_theta": -0.022095139831072627,
-      "debug": "Idle"
+      "robot_theta": -1.1290098598838323,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.2148228207808036,
       "robot_y": 0.0,
-      "robot_theta": -0.022575468957835076,
-      "debug": "Idle"
+      "robot_theta": -1.1535535524900025,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.2619467105846507,
       "robot_y": 0.0,
-      "robot_theta": -0.023055798084597526,
-      "debug": "Idle"
+      "robot_theta": -1.1780972450961726,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.3090706003884978,
       "robot_y": 0.0,
-      "robot_theta": -0.023536127211359975,
-      "debug": "Idle"
+      "robot_theta": -1.2026409377023428,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.356194490192345,
       "robot_y": 0.0,
-      "robot_theta": -0.024016456338122424,
-      "debug": "Idle"
+      "robot_theta": -1.227184630308513,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.403318379996192,
       "robot_y": 0.0,
-      "robot_theta": -0.024496785464884874,
-      "debug": "Idle"
+      "robot_theta": -1.2517283229146832,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.450442269800039,
       "robot_y": 0.0,
-      "robot_theta": -0.024977114591647323,
-      "debug": "Idle"
+      "robot_theta": -1.2762720155208533,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.497566159603886,
       "robot_y": 0.0,
-      "robot_theta": -0.025457443718409772,
-      "debug": "Idle"
+      "robot_theta": -1.3008157081270235,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.544690049407733,
       "robot_y": 0.0,
-      "robot_theta": -0.02593777284517222,
-      "debug": "Idle"
+      "robot_theta": -1.3253594007331937,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.59181393921158,
       "robot_y": 0.0,
-      "robot_theta": -0.02641810197193467,
-      "debug": "Idle"
+      "robot_theta": -1.3499030933393639,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.6389378290154273,
       "robot_y": 0.0,
-      "robot_theta": -0.02689843109869712,
-      "debug": "Idle"
+      "robot_theta": -1.374446785945534,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.6860617188192744,
       "robot_y": 0.0,
-      "robot_theta": -0.02737876022545957,
-      "debug": "Idle"
+      "robot_theta": -1.3989904785517042,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.7331856086231214,
       "robot_y": 0.0,
-      "robot_theta": -0.02785908935222202,
-      "debug": "Idle"
+      "robot_theta": -1.4235341711578744,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.7803094984269685,
       "robot_y": 0.0,
-      "robot_theta": -0.02833941847898447,
-      "debug": "Idle"
+      "robot_theta": -1.4480778637640446,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.8274333882308156,
       "robot_y": 0.0,
-      "robot_theta": -0.028819747605746918,
-      "debug": "Idle"
+      "robot_theta": -1.4726215563702147,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.8745572780346627,
       "robot_y": 0.0,
-      "robot_theta": -0.029300076732509367,
-      "debug": "Idle"
+      "robot_theta": -1.497165248976385,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.9216811678385097,
       "robot_y": 0.0,
-      "robot_theta": -0.029780405859271816,
-      "debug": "Idle"
+      "robot_theta": -1.521708941582555,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 2.968805057642357,
       "robot_y": 0.0,
-      "robot_theta": -0.030260734986034266,
-      "debug": "Idle"
+      "robot_theta": -1.5462526341887253,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.015928947446204,
       "robot_y": 0.0,
-      "robot_theta": -0.030741064112796715,
-      "debug": "Idle"
+      "robot_theta": -1.5707963267948954,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.063052837250051,
       "robot_y": 0.0,
-      "robot_theta": -0.031221393239559164,
-      "debug": "Idle"
+      "robot_theta": -1.5953400194010656,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.110176727053898,
       "robot_y": 0.0,
-      "robot_theta": -0.031701722366321614,
-      "debug": "Idle"
+      "robot_theta": -1.6198837120072358,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.157300616857745,
       "robot_y": 0.0,
-      "robot_theta": -0.03218205149308406,
-      "debug": "Idle"
+      "robot_theta": -1.644427404613406,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.204424506661592,
       "robot_y": 0.0,
-      "robot_theta": -0.03266238061984651,
-      "debug": "Idle"
+      "robot_theta": -1.6689710972195761,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.2515483964654393,
       "robot_y": 0.0,
-      "robot_theta": -0.03314270974660896,
-      "debug": "Idle"
+      "robot_theta": -1.6935147898257463,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.2986722862692863,
       "robot_y": 0.0,
-      "robot_theta": -0.03362303887337141,
-      "debug": "Idle"
+      "robot_theta": -1.7180584824319165,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.3457961760731334,
       "robot_y": 0.0,
-      "robot_theta": -0.03410336800013386,
-      "debug": "Idle"
+      "robot_theta": -1.7426021750380867,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.3929200658769805,
       "robot_y": 0.0,
-      "robot_theta": -0.03458369712689631,
-      "debug": "Idle"
+      "robot_theta": -1.7671458676442569,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.4400439556808275,
       "robot_y": 0.0,
-      "robot_theta": -0.03506402625365876,
-      "debug": "Idle"
+      "robot_theta": -1.791689560250427,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.4871678454846746,
       "robot_y": 0.0,
-      "robot_theta": -0.03554435538042121,
-      "debug": "Idle"
+      "robot_theta": -1.8162332528565972,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.5342917352885217,
       "robot_y": 0.0,
-      "robot_theta": -0.03602468450718366,
-      "debug": "Idle"
+      "robot_theta": -1.8407769454627674,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.5814156250923688,
       "robot_y": 0.0,
-      "robot_theta": -0.03650501363394611,
-      "debug": "Idle"
+      "robot_theta": -1.8653206380689376,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.628539514896216,
       "robot_y": 0.0,
-      "robot_theta": -0.036985342760708556,
-      "debug": "Idle"
+      "robot_theta": -1.8898643306751077,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.675663404700063,
       "robot_y": 0.0,
-      "robot_theta": -0.037465671887471005,
-      "debug": "Idle"
+      "robot_theta": -1.914408023281278,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.72278729450391,
       "robot_y": 0.0,
-      "robot_theta": -0.037946001014233455,
-      "debug": "Idle"
+      "robot_theta": -1.938951715887448,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.769911184307757,
       "robot_y": 0.0,
-      "robot_theta": -0.038426330140995904,
-      "debug": "Idle"
+      "robot_theta": -1.9634954084936183,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.817035074111604,
       "robot_y": 0.0,
-      "robot_theta": -0.03890665926775835,
-      "debug": "Idle"
+      "robot_theta": -1.9880391010997884,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.864158963915451,
       "robot_y": 0.0,
-      "robot_theta": -0.0393869883945208,
-      "debug": "Idle"
+      "robot_theta": -2.012582793705959,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.9112828537192983,
       "robot_y": 0.0,
-      "robot_theta": -0.03986731752128325,
-      "debug": "Idle"
+      "robot_theta": -2.037126486312129,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 3.9584067435231454,
       "robot_y": 0.0,
-      "robot_theta": -0.0403476466480457,
-      "debug": "Idle"
+      "robot_theta": -2.061670178918299,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.005530633326992,
       "robot_y": 0.0,
-      "robot_theta": -0.04082797577480815,
-      "debug": "Idle"
+      "robot_theta": -2.0862138715244694,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.052654523130839,
       "robot_y": 0.0,
-      "robot_theta": -0.0413083049015706,
-      "debug": "Idle"
+      "robot_theta": -2.1107575641306395,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.099778412934685,
       "robot_y": 0.0,
-      "robot_theta": -0.04178863402833305,
-      "debug": "Idle"
+      "robot_theta": -2.1353012567368097,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.146902302738532,
       "robot_y": 0.0,
-      "robot_theta": -0.0422689631550955,
-      "debug": "Idle"
+      "robot_theta": -2.15984494934298,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.1940261925423785,
       "robot_y": 0.0,
-      "robot_theta": -0.04274929228185795,
-      "debug": "Idle"
+      "robot_theta": -2.18438864194915,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.241150082346225,
       "robot_y": 0.0,
-      "robot_theta": -0.0432296214086204,
-      "debug": "Idle"
+      "robot_theta": -2.2089323345553202,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.288273972150072,
       "robot_y": 0.0,
-      "robot_theta": -0.04370995053538285,
-      "debug": "Idle"
+      "robot_theta": -2.2334760271614904,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.335397861953918,
       "robot_y": 0.0,
-      "robot_theta": -0.044190279662145296,
-      "debug": "Idle"
+      "robot_theta": -2.2580197197676606,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.382521751757765,
       "robot_y": 0.0,
-      "robot_theta": -0.044670608788907745,
-      "debug": "Idle"
+      "robot_theta": -2.2825634123738308,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.429645641561612,
       "robot_y": 0.0,
-      "robot_theta": -0.045150937915670195,
-      "debug": "Idle"
+      "robot_theta": -2.307107104980001,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.476769531365458,
       "robot_y": 0.0,
-      "robot_theta": -0.045631267042432644,
-      "debug": "Idle"
+      "robot_theta": -2.331650797586171,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.523893421169305,
       "robot_y": 0.0,
-      "robot_theta": -0.04611159616919509,
-      "debug": "Idle"
+      "robot_theta": -2.3561944901923413,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.571017310973152,
       "robot_y": 0.0,
-      "robot_theta": -0.04659192529595754,
-      "debug": "Idle"
+      "robot_theta": -2.3807381827985115,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.618141200776998,
       "robot_y": 0.0,
-      "robot_theta": -0.04707225442271999,
-      "debug": "Idle"
+      "robot_theta": -2.4052818754046816,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.665265090580845,
       "robot_y": 0.0,
-      "robot_theta": -0.04755258354948244,
-      "debug": "Idle"
+      "robot_theta": -2.429825568010852,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     },
     {
       "robot_x": 4.7123889803846915,
       "robot_y": 0.0,
-      "robot_theta": -0.04803291267624489,
-      "debug": "Idle"
+      "robot_theta": -2.454369260617022,
+      "debug": {
+        "TargetPoint": [
+          5.0,
+          5.0
+        ]
+      }
     }
   ],
   "delta_time": {
