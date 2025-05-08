@@ -27,11 +27,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 			max_motor_speed,
 		},
 	)?;
-	run_test::<Basic>("basic_goto").unwrap();
+	run_test::<Basic>("basic_goto")?;
 	Ok(())
 }
 
 fn create_test(name: &str, input: SimInput) -> io::Result<()> {
+	match fs::metadata("tests") {
+		Ok(m) if !m.is_dir() => {
+			panic!("'tests' already exists and is not a directory")
+		}
+		Err(e) if e.kind() == io::ErrorKind::NotFound =>  {
+            fs::create_dir("tests/")?
+        },
+		_ => {}
+	}
+
 	let filename = format!("tests/{name}.json");
 	let data = serde_json::to_vec_pretty(&input)?;
 	fs::write(filename, &data)

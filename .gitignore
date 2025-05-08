@@ -1,4 +1,5 @@
 
 simulation/target/
+simulation/tests/
 
 enderer/__pycache__/
