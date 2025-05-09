@@ -1,2 +1,2 @@
 mod basic;
-pub use basic::Basic;
+pub use basic::BasicGoto;

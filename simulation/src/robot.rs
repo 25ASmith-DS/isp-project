@@ -5,6 +5,7 @@ use std::cell::Cell;
 pub struct RobotParameters {
 	pub motor_left: Cell<f64>,
 	pub motor_right: Cell<f64>,
+    pub blade_on: Cell<bool>,
 	// Unit: radians
 	pub imu: f64,
 	// Unit: meters

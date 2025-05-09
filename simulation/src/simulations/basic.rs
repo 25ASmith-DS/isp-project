@@ -1,8 +1,8 @@
 use crate::{RobotInstruction as RI, RobotParameters, RobotSimulation, Step};
 use serde::{Deserialize, Serialize};
-use std::collections::VecDeque;
+use std::{collections::VecDeque, f64::consts::PI};
 
-pub struct Basic {
+pub struct BasicGoto {
 	instruction_queue: VecDeque<RI>,
 	state: State,
 }
@@ -15,8 +15,8 @@ pub enum State {
 	TargetPoint(f64, f64),
 }
 
-impl RobotSimulation<'_> for Basic {
-	type DebugInfo = State;
+impl RobotSimulation<'_> for BasicGoto {
+	type DebugInfo = String;
 
 	fn initialize(instructions: &[RI]) -> (Self, Self::DebugInfo)
 	where
@@ -30,7 +30,7 @@ impl RobotSimulation<'_> for Basic {
 				instruction_queue,
 				state,
 			},
-			state,
+			format!("initial state: {state:?}"),
 		)
 	}
 
@@ -39,26 +39,67 @@ impl RobotSimulation<'_> for Basic {
 		_delta_time: std::time::Duration,
 		params: &RobotParameters,
 	) -> Step<Self::DebugInfo> {
+		let mut debug = Vec::new();
+
 		if let State::Idle = self.state {
-			self.state = match self.instruction_queue.pop_front() {
+			params.motor_left.set(0.0);
+			params.motor_right.set(0.0);
+
+			let instruction = self.instruction_queue.pop_front();
+			self.state = match instruction {
 				Some(RI::BladeOff) => State::SetBlade(false),
 				Some(RI::BladeOn) => State::SetBlade(true),
 				Some(RI::GotoPoint(x, y)) => State::TargetPoint(x, y),
 				None => {
 					return Step {
 						end: true,
-						debug: self.state,
+						debug: String::from("No more instructions remaining"),
 					}
 				}
 			};
 		}
 
-		params.motor_left.set(1.0);
-		params.motor_right.set(0.5);
+		self.state = match self.state {
+			State::Idle => unreachable!(),
+			State::SetBlade(b) => {
+				params.blade_on.set(b);
+				State::Idle
+			}
+			State::TargetPoint(x, y) => {
+				let (bot_x, bot_y, bot_angle) = (params.gps_x, params.gps_y, params.imu);
+				let (distance, angle) = {
+					let dx = x - bot_x;
+					let dy = y - bot_y;
+					((dx * dx + dy * dy).sqrt(), dy.atan2(dx))
+				};
+				let error_angle = angle - bot_angle;
+
+				debug.push(format!("Robot Position: ({:.3}, {:.3})", bot_x, bot_y));
+				debug.push(format!("Target point: ({:.2}, {:.2})", x, y));
+				debug.push(format!("Distance to target: {distance:.4}"));
+
+				let ten_degrees = PI / 18.0;
+				if error_angle.abs() > ten_degrees {
+					let power = error_angle.signum() * error_angle.abs().powf(0.7);
+					params.motor_right.set(power);
+					params.motor_left.set(-power);
+				} else {
+					let power = distance.min(1.0);
+					params.motor_right.set(error_angle + power);
+					params.motor_left.set(-error_angle + power);
+				}
+
+				if distance < 0.5 {
+					State::Idle
+				} else {
+					State::TargetPoint(x, y)
+				}
+			}
+		};
 
 		Step {
 			end: false,
-			debug: self.state,
+			debug: debug.join("\n"),
 		}
 	}
 }

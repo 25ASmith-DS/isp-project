@@ -88,12 +88,13 @@ pub fn run_simulation<'de, S: RobotSimulation<'de>>(
 		SimulationLength::Steps(n) => Some(n),
 	};
 
-	let in_out = RobotParameters {
-		imu: 0.0,
-		gps_x: 0.0,
-		gps_y: 0.0,
+	let mut in_out = RobotParameters {
+		imu: state.robot_theta,
+		gps_x: state.robot_x,
+		gps_y: state.robot_y,
 		motor_left: Cell::default(),
 		motor_right: Cell::default(),
+		blade_on: Cell::default(),
 		wheel_distance,
 		wheel_radius,
 		max_motor_speed,
@@ -101,8 +102,18 @@ pub fn run_simulation<'de, S: RobotSimulation<'de>>(
 
 	let mut step_count = 0;
 	'l: loop {
+		in_out.imu = state.robot_theta;
+		in_out.gps_x = state.robot_x;
+		in_out.gps_y = state.robot_y;
+
 		// run simulation code
 		let Step { end, debug } = sim.step(dt, &in_out);
+		in_out
+			.motor_left
+			.set(clamp(in_out.motor_left.get(), (-1.0, 1.0)));
+		in_out
+			.motor_right
+			.set(clamp(in_out.motor_right.get(), (-1.0, 1.0)));
 
 		// update simulation state
 		let r = in_out.wheel_radius;

@@ -1,7 +1,7 @@
 use std::{fs, io, time::Duration};
 
 use isp_sim::{
-	run_simulation, simulations::Basic, RobotInstruction as RI, RobotSimulation, SimInput,
+	run_simulation, simulations::BasicGoto, RobotInstruction as RI, RobotSimulation, SimInput,
 	SimulationLength,
 };
 
@@ -20,14 +20,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 				RI::BladeOff,
 				RI::GotoPoint(0.0, 0.0),
 			],
-			sim_length: SimulationLength::Steps(100),
-			delta_time: Duration::from_millis(10),
+			sim_length: SimulationLength::Indefinite,
+			delta_time: Duration::from_millis(1),
 			wheel_distance,
 			wheel_radius,
 			max_motor_speed,
 		},
 	)?;
-	run_test::<Basic>("basic_goto")?;
+	run_test::<BasicGoto>("basic_goto")?;
 	Ok(())
 }
 
@@ -36,9 +36,7 @@ fn create_test(name: &str, input: SimInput) -> io::Result<()> {
 		Ok(m) if !m.is_dir() => {
 			panic!("'tests' already exists and is not a directory")
 		}
-		Err(e) if e.kind() == io::ErrorKind::NotFound =>  {
-            fs::create_dir("tests/")?
-        },
+		Err(e) if e.kind() == io::ErrorKind::NotFound => fs::create_dir("tests/")?,
 		_ => {}
 	}
 

@@ -2,4 +2,4 @@
 simulation/target/
 simulation/tests/
 
-enderer/__pycache__/
+renderer/__pycache__/
