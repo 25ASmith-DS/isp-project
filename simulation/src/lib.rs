@@ -1,7 +1,9 @@
 pub mod robot;
 pub mod simulations;
 pub mod util;
+pub mod debug;
 
+use debug::DebugInfo;
 pub use robot::{RobotInstruction, RobotParameters};
 pub use util::*;
 
@@ -9,8 +11,8 @@ use serde::{Deserialize, Serialize};
 use std::{cell::Cell, fmt::Debug, time::Duration};
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct SimOutput<D> {
-	pub states: Vec<SimulationState<D>>,
+pub struct SimOutput {
+	pub states: Vec<SimulationState>,
 	pub delta_time: Duration,
 	/// Unit: meters
 	pub wheel_distance: f64,
@@ -41,25 +43,24 @@ pub enum SimulationLength {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SimulationState<D> {
+pub struct SimulationState {
 	pub robot_x: f64,
 	pub robot_y: f64,
 	pub robot_theta: f64,
-	pub debug: D,
+	pub debug: DebugInfo,
 }
 
-pub struct Step<D> {
+pub struct Step {
 	end: bool,
-	debug: D,
+	debug: DebugInfo,
 }
 
-pub trait RobotSimulation<'de>: Sized {
-	type DebugInfo: Serialize + Deserialize<'de> + Clone + Debug;
-	fn initialize(instructions: &[RobotInstruction]) -> (Self, Self::DebugInfo);
-	fn step(&mut self, delta_time: Duration, params: &RobotParameters) -> Step<Self::DebugInfo>;
+pub trait RobotSimulation: Sized {
+	fn initialize(instructions: &[RobotInstruction]) -> (Self, DebugInfo);
+	fn step(&mut self, delta_time: Duration, params: &RobotParameters) -> Step;
 }
 
-pub fn run_simulation<'de, S: RobotSimulation<'de>>(
+pub fn run_simulation<S: RobotSimulation>(
 	SimInput {
 		instructions,
 		sim_length,
@@ -68,7 +69,7 @@ pub fn run_simulation<'de, S: RobotSimulation<'de>>(
 		wheel_radius,
 		max_motor_speed,
 	}: SimInput,
-) -> SimOutput<S::DebugInfo> {
+) -> SimOutput {
 	let (mut sim, debug) = S::initialize(&instructions);
 
 	let mut states = Vec::new();

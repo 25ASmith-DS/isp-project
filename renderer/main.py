@@ -1,6 +1,7 @@
 import pygame as pg
-from math import pi as PI, floor
 import json
+from math import pi as PI, floor
+from debug import Debug, Circle, Line
 
 
 class Duration:
@@ -13,11 +14,11 @@ class Duration:
 
 
 class SimState:
-    def __init__(self, obj):
+    def __init__(self, obj: dict):
         self.robot_x = obj['robot_x']
         self.robot_y = obj['robot_y']
         self.robot_theta = obj['robot_theta']
-        self.debug = obj['debug']
+        self.debug = Debug(obj['debug'])
 
 
 class SimOutput:
@@ -31,8 +32,8 @@ class SimOutput:
 
 path = "../simulation/tests/basic_goto.sim"
 with open(path, 'r') as file:
-    debug_text = file.read()
-simulation_output = SimOutput(json.loads(debug_text))
+    json_str = file.read()
+simulation_output = SimOutput(json.loads(json_str))
 sim_dt = simulation_output.delta_time
 states = simulation_output.states
 
@@ -62,6 +63,13 @@ clock = pg.time.Clock()
 world_timer = 0.0
 frame_by_frame = True
 frame_skip = 1
+
+
+def worldcoords(x, y=None):
+    if isinstance(x, tuple) and y is None:
+        return worldcoords(x[0], x[1])
+    return (x * WORLD_SCALE + WORLD_WIDTH / 2,
+            -y * WORLD_SCALE + WORLD_HEIGHT / 2)
 
 
 quit = False
@@ -101,6 +109,8 @@ while not quit:
 
     state_index = floor(world_timer / sim_dt)
 
+    debug_messages = []
+
     if state_index < len(states):
         world_surface.fill((101, 202, 87))
         state: SimState = states[state_index]
@@ -108,11 +118,26 @@ while not quit:
         degrees = radians * 180 / PI
         robot = pg.transform.rotate(sprite, degrees)
 
-        blit_x = state.robot_x * WORLD_SCALE + WORLD_WIDTH / 2
-        blit_y = -state.robot_y * WORLD_SCALE + WORLD_HEIGHT / 2
+        blit_x, blit_y = worldcoords(state.robot_x, state.robot_y)
         world_surface.blit(robot,
                            (blit_x - robot.get_width() / 2,
                             blit_y - robot.get_height() / 2))
+        debug = state.debug
+        for r in debug.renderables:
+            if isinstance(r, Circle):
+                circle: Circle = r
+                pg.draw.circle(world_surface,
+                               circle.color,
+                               worldcoords(circle.center),
+                               circle.radius * WORLD_SCALE)
+            if isinstance(r, Line):
+                line: Line = r
+                pg.draw.line(world_surface, line.color,
+                             worldcoords(line.p1),
+                             worldcoords(line.p2),
+                             line.width)
+        debug_messages += debug.messages
+
     else:
         frame_by_frame = True
         world_timer -= sim_dt
@@ -150,19 +175,17 @@ while not quit:
 
     screen.blit(c, (0, 0))
 
-    debug_text = []
     fs = f"frame skip {frame_skip}" if frame_by_frame else "realtime"
-    debug_text.append(f"Frame {state_index}/{len(states)} ({fs})")
+    debug_messages = \
+        [f"Frame {state_index}/{len(states)} ({fs})"] + debug_messages
 
     dec = 4
     t = str(world_timer) + "0" * dec
-    debug_text.append(f"Time: {t[:t.find('.')+dec]}")
-
-    debug_text += str(state.debug).splitlines()
+    debug_messages = [f"Time: {t[:t.find('.')+dec]}"] + debug_messages
 
     padding = 5
     y = padding
-    for line in debug_text:
+    for line in debug_messages:
         r = font.render(line, True, (0, 0, 0), (255, 255, 255))
         screen.blit(r, (padding, y))
         y += r.get_height() + padding

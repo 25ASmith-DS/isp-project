@@ -28,8 +28,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 		},
 	)?;
 	run_test::<BasicGoto>("basic_goto")?;
+
 	Ok(())
 }
+
 
 fn create_test(name: &str, input: SimInput) -> io::Result<()> {
 	match fs::metadata("tests") {
@@ -45,7 +47,7 @@ fn create_test(name: &str, input: SimInput) -> io::Result<()> {
 	fs::write(filename, &data)
 }
 
-fn run_test<'de, S: RobotSimulation<'de>>(name: &str) -> io::Result<()> {
+fn run_test<S: RobotSimulation>(name: &str) -> io::Result<()> {
 	let filename = format!("tests/{name}.json");
 	let input: SimInput = serde_json::from_slice(&fs::read(filename)?)?;
 	let output = run_simulation::<S>(input);
