@@ -18,6 +18,7 @@ class SimState:
         self.robot_x = obj['robot_x']
         self.robot_y = obj['robot_y']
         self.robot_theta = obj['robot_theta']
+        self.blade_on = obj['blade_on']
         self.debug = Debug(obj['debug'])
 
 
@@ -33,9 +34,9 @@ class SimOutput:
 path = "../simulation/tests/basic_goto.sim"
 with open(path, 'r') as file:
     json_str = file.read()
-simulation_output = SimOutput(json.loads(json_str))
-sim_dt = simulation_output.delta_time
-states = simulation_output.states
+sim_output = SimOutput(json.loads(json_str))
+sim_dt = sim_output.delta_time
+states = sim_output.states
 
 
 SCREEN_WIDTH = 1280
@@ -53,13 +54,14 @@ screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 font = pg.font.Font(pg.font.get_default_font(), floor(SCREEN_HEIGHT / 40))
 robot_sprite = pg.image.load("robot.png")
-robot_sprite_size = (simulation_output.wheel_distance * WORLD_SCALE,
-                     simulation_output.wheel_distance * WORLD_SCALE
+robot_sprite_size = (sim_output.wheel_distance * WORLD_SCALE,
+                     sim_output.wheel_distance * WORLD_SCALE
                      * robot_sprite.get_height() / robot_sprite.get_width())
 robot_sprite = pg.transform.smoothscale(robot_sprite, robot_sprite_size)
 
 grass_size = 2
-grass_texture = pg.image.load("grass.png")
+grass_texture_path = "grass.png"
+grass_texture = pg.image.load(grass_texture_path)
 grass_texture = pg.transform.smoothscale(
         grass_texture, (WORLD_SCALE * grass_size, WORLD_SCALE * grass_size))
 
@@ -131,6 +133,16 @@ while not quit:
     debug_messages = []
 
     if state_index < len(states):
+
+        for i in range(state_index):
+            state = states[i]
+            x, y = state.robot_x, state.robot_y
+            if state.blade_on:
+                pg.draw.circle(world_surface,
+                               (48, 49, 31),
+                               worldcoords(x, y),
+                               robot_sprite.get_width() / 2.5)
+
         state: SimState = states[state_index]
         radians = state.robot_theta
         degrees = radians * 180 / PI

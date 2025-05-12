@@ -14,6 +14,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 		"basic_goto",
 		SimInput {
 			instructions: vec![
+                RI::BladeOn,
 				RI::GotoPoint(2.0, 0.0),
 				RI::GotoPoint(0.0, 0.0),
 				RI::GotoPoint(2.0, 0.0),

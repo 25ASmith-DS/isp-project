@@ -47,6 +47,7 @@ pub struct SimulationState {
 	pub robot_x: f64,
 	pub robot_y: f64,
 	pub robot_theta: f64,
+    pub blade_on: bool,
 	pub debug: DebugInfo,
 }
 
@@ -78,6 +79,7 @@ pub fn run_simulation<S: RobotSimulation>(
 		robot_x: 0.0,
 		robot_y: 0.0,
 		robot_theta: 0.0,
+        blade_on: false,
 	};
 	states.push(state.clone());
 
@@ -95,7 +97,7 @@ pub fn run_simulation<S: RobotSimulation>(
 		gps_y: state.robot_y,
 		motor_left: Cell::default(),
 		motor_right: Cell::default(),
-		blade_on: Cell::default(),
+		blade_on: Cell::new(state.blade_on),
 		wheel_distance,
 		wheel_radius,
 		max_motor_speed,
@@ -130,6 +132,8 @@ pub fn run_simulation<S: RobotSimulation>(
 		state.robot_x += dx_dt * dt.as_secs_f64();
 		state.robot_y += dy_dt * dt.as_secs_f64();
 		state.robot_theta += dtheta_dt * dt.as_secs_f64();
+
+		state.blade_on = in_out.blade_on.get();
 
 		state.debug = debug;
 
