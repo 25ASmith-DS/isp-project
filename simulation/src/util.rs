@@ -24,3 +24,10 @@ pub fn invlerp(t: f64, (min, max): (f64, f64)) -> f64 {
 pub fn map(t: f64, i: (f64, f64), o: (f64, f64)) -> f64 {
 	lerp(invlerp(t, i), o)
 }
+
+#[inline]
+pub fn signed_angle_difference(source: f64, target: f64) -> f64 {
+    use std::f64::consts::PI;
+    (target - source + PI).rem_euclid(2.0 * PI) - PI
+    
+}

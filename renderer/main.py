@@ -1,6 +1,6 @@
 import pygame as pg
 import json
-from math import pi as PI, floor
+from math import pi as PI, floor, ceil
 from debug import Debug, Circle, Line
 
 
@@ -40,18 +40,36 @@ states = simulation_output.states
 
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 960
-
-WORLD_WIDTH = 8000
-WORLD_HEIGHT = 6000
-WORLD_SCALE = 20  # pixels per meter
-
 ASPECT_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT
+
+WORLD_SCALE = SCREEN_HEIGHT / 10  # pixels per meter
+
+WORLD_WIDTH = SCREEN_WIDTH * 5
+WORLD_HEIGHT = WORLD_WIDTH
+
 
 pg.init()
 screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 font = pg.font.Font(pg.font.get_default_font(), floor(SCREEN_HEIGHT / 40))
-sprite = pg.image.load("robot.png")
+robot_sprite = pg.image.load("robot.png")
+robot_sprite_size = (simulation_output.wheel_distance * WORLD_SCALE,
+                     simulation_output.wheel_distance * WORLD_SCALE
+                     * robot_sprite.get_height() / robot_sprite.get_width())
+robot_sprite = pg.transform.smoothscale(robot_sprite, robot_sprite_size)
+
+grass_size = 2
+grass_texture = pg.image.load("grass.png")
+grass_texture = pg.transform.smoothscale(
+        grass_texture, (WORLD_SCALE * grass_size, WORLD_SCALE * grass_size))
+
+grass_surface = pg.Surface((WORLD_WIDTH, WORLD_HEIGHT))
+for y in range(ceil(WORLD_HEIGHT / grass_texture.get_height())):
+    for x in range(ceil(WORLD_WIDTH / grass_texture.get_width())):
+        grass_surface.blit(grass_texture,
+                           (x * grass_texture.get_width(),
+                            y * grass_texture.get_height()))
+
 
 camera = pg.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 camera_surface = pg.Surface(camera.size)
@@ -80,6 +98,7 @@ if __name__ != "__main__":
 while not quit:
     screen.fill((0, 0, 0))
     camera_surface.fill((0, 0, 0))
+    world_surface.blit(grass_surface, (0, 0))
 
     pressed = pg.key.get_pressed()
 
@@ -112,11 +131,10 @@ while not quit:
     debug_messages = []
 
     if state_index < len(states):
-        world_surface.fill((101, 202, 87))
         state: SimState = states[state_index]
         radians = state.robot_theta
         degrees = radians * 180 / PI
-        robot = pg.transform.rotate(sprite, degrees)
+        robot = pg.transform.rotate(robot_sprite, degrees)
 
         blit_x, blit_y = worldcoords(state.robot_x, state.robot_y)
         world_surface.blit(robot,
@@ -137,7 +155,6 @@ while not quit:
                              worldcoords(line.p2),
                              line.width)
         debug_messages += debug.messages
-
     else:
         frame_by_frame = True
         world_timer -= sim_dt

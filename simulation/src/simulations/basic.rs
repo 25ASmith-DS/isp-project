@@ -1,6 +1,6 @@
 use crate::{
 	debug::{renderables::line, DebugInfo},
-	RobotInstruction as RI, RobotParameters, RobotSimulation, Step,
+	signed_angle_difference, RobotInstruction as RI, RobotParameters, RobotSimulation, Step,
 };
 use serde::{Deserialize, Serialize};
 use std::{collections::VecDeque, f64::consts::PI};
@@ -8,6 +8,7 @@ use std::{collections::VecDeque, f64::consts::PI};
 pub struct BasicGoto {
 	instruction_queue: VecDeque<RI>,
 	state: State,
+	steps_since_idle: usize,
 }
 
 #[derive(Debug, Default, Clone, Copy, Serialize, Deserialize)]
@@ -26,12 +27,14 @@ impl RobotSimulation for BasicGoto {
 		let mut debug = DebugInfo::default();
 		let instruction_queue = VecDeque::from_iter(instructions.iter().cloned());
 		let state = State::Idle;
+		let steps_since_idle = 0;
 
 		debug.messages.push("Robot Initialized".to_string());
 		(
 			Self {
 				instruction_queue,
 				state,
+				steps_since_idle,
 			},
 			debug,
 		)
@@ -41,6 +44,8 @@ impl RobotSimulation for BasicGoto {
 		let mut debug = DebugInfo::default();
 
 		if let State::Idle = self.state {
+			self.steps_since_idle = 0;
+
 			params.motor_left.set(0.0);
 			params.motor_right.set(0.0);
 
@@ -54,7 +59,12 @@ impl RobotSimulation for BasicGoto {
 					return Step { end: true, debug };
 				}
 			};
+		} else {
+			self.steps_since_idle += 1;
 		}
+		debug
+			.messages
+			.push(format!("Steps since last idle: {}", self.steps_since_idle));
 
 		self.state = match self.state {
 			State::Idle => unreachable!(),
@@ -69,36 +79,55 @@ impl RobotSimulation for BasicGoto {
 					let dy = y - bot_y;
 					((dx * dx + dy * dy).sqrt(), dy.atan2(dx))
 				};
-				let error_angle = angle - bot_angle;
+				let error_angle = signed_angle_difference(bot_angle, angle);
 
-				debug.renderables.push(line((x, y), (bot_x, bot_y), 4.0, (255, 0, 0)));
+				let ten_degrees = PI / 18.0;
+				if error_angle.abs() > ten_degrees {
+					let power = error_angle.signum() * error_angle.abs().min(1.0).powf(0.7) / 1.5;
+					params.motor_right.set(power);
+					params.motor_left.set(-power);
+				} else {
+					let power = distance.min(2.0) / 2.0;
+                    let power = power.sqrt();
+                    let correction_factor = 4.0;
 
+					params.motor_right.set(error_angle * correction_factor + power);
+					params.motor_left.set(-error_angle * correction_factor + power);
+				}
+
+				let next_state = if distance < 0.5 {
+					State::Idle
+				} else {
+					State::TargetPoint(x, y)
+				};
+
+				debug
+					.renderables
+					.push(line((x, y), (bot_x, bot_y), 4.0, (255, 0, 0)));
 				debug
 					.messages
 					.push(format!("Robot Position: ({:.3}, {:.3})", bot_x, bot_y));
+				debug
+					.messages
+					.push(format!("Robot Angle: {:.1}", bot_angle * 180.0 / PI));
 				debug
 					.messages
 					.push(format!("Target point: ({:.2}, {:.2})", x, y));
 				debug
 					.messages
 					.push(format!("Distance to target: {distance:.4}"));
+				debug.messages.push(format!(
+					"Angle error to target: {:.1}",
+					error_angle * 180.0 / PI
+				));
+				debug
+					.messages
+					.push(format!("Left Motor Power: {:+5.2}", params.motor_left.get()));
+				debug
+					.messages
+					.push(format!("Right Motor Power: {:+5.2}", params.motor_right.get()));
 
-				let ten_degrees = PI / 18.0;
-				if error_angle.abs() > ten_degrees {
-					let power = error_angle.signum() * error_angle.abs().powf(0.7);
-					params.motor_right.set(power);
-					params.motor_left.set(-power);
-				} else {
-					let power = distance.min(1.0);
-					params.motor_right.set(error_angle + power);
-					params.motor_left.set(-error_angle + power);
-				}
-
-				if distance < 0.5 {
-					State::Idle
-				} else {
-					State::TargetPoint(x, y)
-				}
+				next_state
 			}
 		};
 

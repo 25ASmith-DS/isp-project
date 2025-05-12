@@ -1,4 +1,4 @@
-use std::{fs, io, time::Duration};
+use std::{f64::consts::PI, fs, io, time::Duration};
 
 use isp_sim::{
 	run_simulation, simulations::BasicGoto, RobotInstruction as RI, RobotSimulation, SimInput,
@@ -14,13 +14,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 		"basic_goto",
 		SimInput {
 			instructions: vec![
-				RI::GotoPoint(5.0, 5.0),
-				RI::BladeOn,
-				RI::GotoPoint(-5.0, 15.0),
-				RI::BladeOff,
+				RI::GotoPoint(2.0, 0.0),
+				RI::GotoPoint(0.0, 0.0),
+				RI::GotoPoint(2.0, 0.0),
 				RI::GotoPoint(0.0, 0.0),
 			],
-			sim_length: SimulationLength::Indefinite,
+			sim_length: SimulationLength::Steps(10000),
 			delta_time: Duration::from_millis(1),
 			wheel_distance,
 			wheel_radius,
@@ -31,7 +30,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 	Ok(())
 }
-
 
 fn create_test(name: &str, input: SimInput) -> io::Result<()> {
 	match fs::metadata("tests") {
