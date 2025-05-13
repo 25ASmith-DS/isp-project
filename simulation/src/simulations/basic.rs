@@ -88,14 +88,18 @@ impl RobotSimulation for BasicGoto {
 					params.motor_left.set(-power);
 				} else {
 					let power = distance.min(2.0) / 2.0;
-                    let power = power.sqrt();
-                    let correction_factor = 4.0;
+					let power = power.sqrt();
+					let correction_factor = 4.0;
 
-					params.motor_right.set(error_angle * correction_factor + power);
-					params.motor_left.set(-error_angle * correction_factor + power);
+					params
+						.motor_right
+						.set(error_angle * correction_factor + power);
+					params
+						.motor_left
+						.set(-error_angle * correction_factor + power);
 				}
 
-                let distance_threshold = 0.2;
+				let distance_threshold = 0.2;
 				let next_state = if distance < distance_threshold {
 					State::Idle
 				} else {
@@ -121,12 +125,14 @@ impl RobotSimulation for BasicGoto {
 					"Angle error to target: {:.1}",
 					error_angle * 180.0 / PI
 				));
-				debug
-					.messages
-					.push(format!("Left Motor Power: {:+5.2}", params.motor_left.get()));
-				debug
-					.messages
-					.push(format!("Right Motor Power: {:+5.2}", params.motor_right.get()));
+				debug.messages.push(format!(
+					"Left Motor Power: {:+5.2}",
+					params.motor_left.get()
+				));
+				debug.messages.push(format!(
+					"Right Motor Power: {:+5.2}",
+					params.motor_right.get()
+				));
 
 				next_state
 			}
