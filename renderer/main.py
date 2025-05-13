@@ -1,79 +1,126 @@
 import pygame as pg
-import ui
+import elements
 
 
 pg.init()
-screen = pg.display.set_mode((800, 600))
-font = pg.font.SysFont(None, 20)
+screen = pg.display.set_mode((1280, 720))
+font = pg.font.SysFont(None, 32)
 
 
-class Root(ui.ClickableSurface):
-    def __init__(self, width, height):
-        self.surface = pg.Surface((width, height))
-        self.children: list[ui.Child] = [
-                ui.Child(DebugButton(200, 100), width - 300, 200)
+class InstructionBuilderModel:
+    def __init__(self):
+        self.instructions = []
+        self.selected = -1
+
+    def receive(self, message):
+        print(f"Received {message} message")
+
+
+class Root(elements.ClickableSurface):
+    def __init__(self, size, model):
+        self.surface = None
+        self.bg = (40, 40, 40)  # #282828
+
+        button_size = (300, 75)
+        button_fg = (235, 219, 178)
+        button_bg = (80, 73, 69)
+        button_child = (lambda text, message: elements.Child(
+            EventEmitterButton(
+                button_size,
+                button_bg, button_fg,
+                text, message, model),
+            (0, 0)))
+
+        self.children = [
+                button_child("Pop instruction", "pop_instruction"),
+                button_child("Line", "add_line"),
+                button_child("Curve", "add_curve"),
+                button_child("Blade off", "blade_off"),
+                button_child("Blade on", "blade_on"),
                 ]
 
-    def on_click(self, x, y, button):
-        if ui.click_children(self.children, x, y, button):
+        self.resize(size)
+
+    def on_click(self, pos, button):
+        if elements.click_children(self.children, pos, button):
             return
 
-    def resize(self, new_width, new_height):
+    def resize(self, new_size):
+        new_width, new_height = new_size
         self.surface = pg.Surface((new_width, new_height))
+
+        border_padding = 40
+        button_padding = 10
+        button_y = border_padding - button_padding
+
+        for child in self.children:
+            if isinstance(child.surface, EventEmitterButton):
+                button_y += button_padding
+                w, h = child.get_size()
+                child.x = new_width - w - border_padding
+                child.y = button_y
+                child.blit_on(self.surface)
+                button_y += h
 
     def get_size(self):
         return self.surface.get_size()
 
     def update(self):
-        self.surface.fill((36, 36, 36))
+        self.surface.fill(self.bg)
         for child in self.children:
-            self.surface.blit(child.surface.update(), (child.x, child.y))
+            child.blit_on(self.surface)
 
         return self.surface
 
 
-class DebugButton(ui.ClickableSurface):
-    def __init__(self, width, height):
-        self.surface = pg.Surface((width, height))
-        self.text = "Debug"
-        self.text_surface = font.render(self.text, True, (255, 255, 255))
-        self.children = []
+class EventEmitterButton(elements.ClickableSurface):
+    def __init__(self, size, bg, fg, text, message, recv):
+        self.surface = None
+        self.bg = bg
+        self.fg = fg
+        self.message = message
+        self.recv = recv
 
-    def on_click(self, x, y, button):
+        self.text = text
+        self.text_surface = font.render(self.text, True, self.fg)
+        self.resize(size)
+
+    def on_click(self, pos, button):
         if button == 1:
-            print(f"Debug button clicked at {x}, {y}")
+            print(f"Emitted {self.message} message")
+            self.recv.receive(self.message)
 
-    def resize(self, new_width, new_height):
+    def resize(self, new_size):
+        new_width, new_height = new_size
         self.surface = pg.Surface((new_width, new_height))
+        self.surface.fill(self.bg)
+        sw, sh = self.surface.get_size()
+        tw, th = self.text_surface.get_size()
+        blit_x = (sw - tw) / 2
+        blit_y = (sh - th) / 2
+        self.surface.blit(self.text_surface, (blit_x, blit_y))
 
     def get_size(self):
         return self.surface.get_size()
 
     def update(self):
-        self.surface.fill((0, 0, 0))
-        blit_x = self.surface.get_width() - self.text_surface.get_width()
-        blit_y = self.surface.get_height() - self.text_surface.get_height()
-        self.surface.blit(self.text_surface, (blit_x / 2, blit_y / 2))
-        for child in self.children:
-            self.surface.blit(child.surface.update(), (child.x, child.y))
-
         return self.surface
 
 
-root = Root(screen.get_width(), screen.get_height())
+screen_size = (screen.get_width(), screen.get_height())
+root = Root(screen_size, InstructionBuilderModel())
 
 
 done = False
 while not done:
-    mouse_x, mouse_y = pg.mouse.get_pos()
+    mouse_pos = pg.mouse.get_pos()
     for ev in pg.event.get():
         if ev.type == pg.QUIT:
             done = True
         if ev.type == pg.WINDOWRESIZED:
-            root.resize(ev.x, ev.y)
-        if ev.type == pg.MOUSEBUTTONDOWN:
-            root.on_click(mouse_x, mouse_y, ev.button)
-        # print(pg.event.event_name(ev.type), ev.__dict__)
+            root.resize((ev.x, ev.y))
+        if ev.type == pg.MOUSEBUTTONUP:
+            root.on_click(mouse_pos, ev.button)
 
     screen.blit(root.update(), (0, 0))
     pg.display.update()
