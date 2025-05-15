@@ -14,6 +14,9 @@ class ClickableSurface:
     def on_raise(self, pos: tuple[int, int], button: int):
         raise NotImplementedError()
 
+    def on_move(self, pos: tuple[int, int]):
+        raise NotImplementedError()
+
     def resize(self, new_size: tuple[int, int]):
         raise NotImplementedError()
 
@@ -29,7 +32,7 @@ class ClickableSurface:
 
 class Child:
     def __init__(self, surface, pos):
-        self.surface = surface
+        self.surface: ClickableSurface = surface
         self.x, self.y = pos
 
     def blit_on(self, target_surface: pg.Surface):
@@ -82,10 +85,20 @@ def click_children(children, pos, button) -> bool:
             return True
     return False
 
+
 def raise_children(children, pos, button) -> bool:
     x, y = pos
     for child in children:
         if child.collide_point(pos):
             child.surface.on_raise((x - child.x, y - child.y), button)
+            return True
+    return False
+
+
+def move_children(children: list[Child], pos) -> bool:
+    x, y = pos
+    for child in children:
+        if child.collide_point(pos):
+            child.surface.on_move((x - child.x, y - child.y))
             return True
     return False
