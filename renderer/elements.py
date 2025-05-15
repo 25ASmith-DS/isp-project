@@ -11,6 +11,9 @@ class ClickableSurface:
     def on_click(self, pos: tuple[int, int], button: int):
         raise NotImplementedError()
 
+    def on_raise(self, pos: tuple[int, int], button: int):
+        raise NotImplementedError()
+
     def resize(self, new_size: tuple[int, int]):
         raise NotImplementedError()
 
@@ -55,8 +58,11 @@ class Child:
     def on_click(self, pos: tuple[int, int], button: int):
         self.surface.on_click(pos, button)
 
-    def resize(self, new_width: int, new_height: int):
-        self.surface.resize(new_width, new_height)
+    def on_raise(self, pos: tuple[int, int], button: int):
+        self.surface.on_raise(pos, button)
+
+    def resize(self, new_size: tuple[int, int]):
+        self.surface.resize(new_size)
 
     def get_size(self) -> tuple[int, int]:
         return self.surface.get_size()
@@ -73,5 +79,13 @@ def click_children(children, pos, button) -> bool:
     for child in children:
         if child.collide_point(pos):
             child.surface.on_click((x - child.x, y - child.y), button)
+            return True
+    return False
+
+def raise_children(children, pos, button) -> bool:
+    x, y = pos
+    for child in children:
+        if child.collide_point(pos):
+            child.surface.on_raise((x - child.x, y - child.y), button)
             return True
     return False
