@@ -1,10 +1,11 @@
 pub mod robot;
-pub mod simulations;
+pub mod simulation;
 pub mod util;
 pub mod debug;
 
 use debug::DebugInfo;
 pub use robot::{RobotInstruction, RobotParameters};
+use simulation::RobotSimulation;
 pub use util::*;
 
 use serde::{Deserialize, Serialize};
@@ -56,12 +57,8 @@ pub struct Step {
 	debug: DebugInfo,
 }
 
-pub trait RobotSimulation: Sized {
-	fn initialize(instructions: &[RobotInstruction]) -> (Self, DebugInfo);
-	fn step(&mut self, delta_time: Duration, params: &RobotParameters) -> Step;
-}
 
-pub fn run_simulation<S: RobotSimulation>(
+pub fn run_simulation(
 	SimInput {
 		instructions,
 		sim_length,
@@ -71,7 +68,7 @@ pub fn run_simulation<S: RobotSimulation>(
 		max_motor_speed,
 	}: SimInput,
 ) -> SimOutput {
-	let (mut sim, debug) = S::initialize(&instructions);
+	let (mut sim, debug) = RobotSimulation::initialize(&instructions);
 
 	let mut states = Vec::new();
 	let mut state = SimulationState {
