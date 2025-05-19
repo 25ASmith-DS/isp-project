@@ -1,6 +1,8 @@
 import message
 from instruction import Line, CubicBezier, BladeOn, BladeOff
 
+from tkinter.filedialog import askopenfilename, asksaveasfilename
+
 
 class InstructionBuilderModel:
     def __init__(self):
@@ -55,7 +57,11 @@ class InstructionBuilderModel:
                 if m.index == 3:
                     selected.p3 = m.pos
 
-        print([type(i) for i in self.instructions])
+        if isinstance(m, message.Export):
+            self.export_instructions()
+
+        if isinstance(m, message.Import):
+            self.import_instructions()
 
     def end_point(self) -> tuple[int, int]:
         i = len(self.instructions) - 1
@@ -67,3 +73,11 @@ class InstructionBuilderModel:
                 return inst.p3
             i -= 1
         return (0, 0)
+
+    def export_instructions(self):
+        filepath = str(asksaveasfilename())
+        print(filepath)
+
+    def import_instructions(self):
+        filepath = str(askopenfilename())
+        print(filepath)
