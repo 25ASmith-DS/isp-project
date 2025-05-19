@@ -1,77 +1,14 @@
 import pygame as pg
 from elements import click_children, raise_children, \
                      move_children, Child, ClickableSurface
-from instruction import Line, BladeOff, BladeOn, CubicBezier
+from instruction import Line, CubicBezier, BladeOn, BladeOff
+from model import InstructionBuilderModel
 import message
 
 
 def distance_squared(p0, p1):
     dx, dy = p1[0] - p0[0], p1[1] - p0[1]
     return (dx * dx + dy * dy)
-
-
-class InstructionBuilderModel:
-    def __init__(self):
-        self.instructions = []
-
-    def receive(self, m):
-        end = self.end_point()
-
-        def add(p0, p1):
-            return (p0[0] + p1[0], p0[1] + p1[1])
-
-        if isinstance(m, message.PopInstruction):
-            if len(self.instructions) > 0:
-                self.instructions.pop()
-
-        if isinstance(m, message.AddLine):
-            self.instructions.append(Line(end, add(end, (0.5, 0.5))))
-
-        if isinstance(m, message.AddCurve):
-            self.instructions.append(CubicBezier(end,
-                                                 add(end, (0.5, 0.5)),
-                                                 add(end, (1.0, 0.5)),
-                                                 add(end, (2.0, 0.0))))
-
-        if isinstance(m, message.BladeOn):
-            self.instructions.append(BladeOn)
-
-        if isinstance(m, message.BladeOff):
-            self.instructions.append(BladeOff)
-
-        if isinstance(m, message.UpdatePoint):
-            length = len(self.instructions)
-            if length < 1:
-                return
-            selected = self.instructions[length - 1]
-            if isinstance(selected, Line):
-                if m.index == 0:
-                    selected.start = m.pos
-                if m.index == 1:
-                    selected.end = m.pos
-            if isinstance(selected, CubicBezier):
-                if m.index == 0:
-                    selected.p0 = m.pos
-                if m.index == 1:
-                    selected.p1 = m.pos
-                if m.index == 2:
-                    selected.p2 = m.pos
-                if m.index == 3:
-                    selected.p3 = m.pos
-
-        else:
-            print(f"Received message \"{m}\"")
-
-    def end_point(self) -> tuple[int, int]:
-        i = len(self.instructions) - 1
-        while i >= 0:
-            inst = self.instructions[i]
-            if isinstance(inst, Line):
-                return inst.end
-            if isinstance(inst, CubicBezier):
-                return inst.p3
-            i -= 1
-        return (0, 0)
 
 
 class Root(ClickableSurface):
@@ -197,15 +134,18 @@ class EditorFrame(ClickableSurface):
         self.surface = None
         self.model = model
 
-        self.bg = (80, 73, 69)                       # #504945
-        self.line_color_unselected = (251, 73, 52)   # #FB4934
-        self.line_color_selected = (184, 167, 38)    # #B8BB26
+        self.bg = (80, 73, 69)                      # #504945
+        self.fg = (235, 219, 178)                   # #EBDBB2
+        self.line_color_blade_on = (251, 73, 52)    # #FB4934
+        self.line_color_blade_off = (138, 41, 20)   # #8B2914
+        self.line_color_selected = (184, 167, 38)   # #B8BB26
 
         self.world_width = self.world_height = 0
         self.world_scale = 0
 
         self.line_width = 0
         self.point_radius = 0
+        self.point_radius_selected = 0
 
         self.dragging = -1
 
@@ -217,29 +157,44 @@ class EditorFrame(ClickableSurface):
         instructions = self.model.instructions
         length = len(instructions)
 
-        bezier_steps = 10
+        bezier_steps = 50
 
+        blade_on = False
         for i in range(length - 1):
             instruction = instructions[i]
+            if blade_on:
+                line_color = self.line_color_blade_on
+            else:
+                line_color = self.line_color_blade_off
+
             if isinstance(instruction, Line):
                 pg.draw.line(self.surface,
-                             self.line_color_unselected,
+                             line_color,
                              self.screencoords(instruction.end),
                              self.screencoords(instruction.start),
                              self.line_width)
-                pg.draw.circle(self.surface,
-                               self.line_color_unselected,
-                               self.screencoords(instruction.start),
-                               self.point_radius)
+                for p in [instruction.start, instruction.end]:
+                    pg.draw.circle(self.surface,
+                                   line_color,
+                                   self.screencoords(p),
+                                   self.point_radius)
             if isinstance(instruction, CubicBezier):
                 ts = [i / bezier_steps for i in range(bezier_steps + 1)]
                 ps = [instruction.point_on(t) for t in ts]
                 sps = [self.screencoords(p) for p in ps]
                 for i in range(bezier_steps):
                     pg.draw.line(self.surface,
-                                 self.line_color_unselected,
+                                 line_color,
                                  sps[i], sps[i + 1],
                                  width=self.line_width)
+                pg.draw.circle(self.surface,
+                               line_color,
+                               self.screencoords(instruction.p3),
+                               self.point_radius)
+            if isinstance(instruction, BladeOn):
+                blade_on = True
+            if isinstance(instruction, BladeOff):
+                blade_on = False
 
         if length > 0:
             selected = instructions[length - 1]
@@ -251,8 +206,16 @@ class EditorFrame(ClickableSurface):
                              self.line_width)
                 pg.draw.circle(self.surface,
                                self.line_color_selected,
-                               self.screencoords(selected.end),
+                               self.screencoords(selected.start),
                                self.point_radius)
+                pg.draw.circle(self.surface,
+                               self.line_color_selected,
+                               self.screencoords(selected.end),
+                               self.point_radius_selected)
+
+                d = distance_squared(selected.start, selected.end) ** 0.5
+                text = font.render(f"Dist: {round(d, 3)}", True, self.fg)
+                self.surface.blit(text, (0, 30))
             if isinstance(selected, CubicBezier):
                 ts = [i / bezier_steps for i in range(bezier_steps + 1)]
                 ps = [selected.point_on(t) for t in ts]
@@ -276,7 +239,27 @@ class EditorFrame(ClickableSurface):
                     pg.draw.circle(self.surface,
                                    self.line_color_selected,
                                    self.screencoords(p),
-                                   self.point_radius)
+                                   self.point_radius_selected)
+                d = distance_squared(selected.p0, selected.p3) ** 0.5
+                text = font.render(f"Dist: {round(d, 3)}", True, self.fg)
+                self.surface.blit(text, (0, 30))
+
+            if isinstance(selected, BladeOn):
+                blade_on = True
+                pg.draw.circle(self.surface,
+                               self.line_color_selected,
+                               self.screencoords(self.model.end_point()),
+                               self.point_radius_selected)
+            if isinstance(selected, BladeOff):
+                blade_on = False
+                pg.draw.circle(self.surface,
+                               self.line_color_selected,
+                               self.screencoords(self.model.end_point()),
+                               self.point_radius_selected)
+
+        text = font.render("Blade ON" if blade_on else "Blade OFF",
+                           True, self.fg)
+        self.surface.blit(text, (0, 0))
 
         return self.surface
 
@@ -312,7 +295,8 @@ class EditorFrame(ClickableSurface):
         self.world_scale = 100
 
         self.line_width = round(self.world_scale * (1/18))
-        self.point_radius = round(self.world_scale * (1/10))
+        self.point_radius = round(self.world_scale * (1/15))
+        self.point_radius_selected = round(self.world_scale * (1/8))
 
         self.surface = pg.Surface(new_size)
 
