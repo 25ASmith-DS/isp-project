@@ -16,28 +16,35 @@ class Root(ClickableSurface):
         self.surface = None
         self.bg = (40, 40, 40)       # #282828
 
-        button_size = (300, 75)
+        trb_size = (300, 75)
         button_fg = (235, 219, 178)  # #EBDBB2
         button_bg = (80, 73, 69)     # #504945
-        button_child = (lambda text, message: Child(
+        button_child = (lambda size, text, message: Child(
             EventEmitterButton(
-                button_size,
+                size,
                 button_bg, button_fg,
                 text, message, model),
             (0, 0)))
 
         self.top_right_buttons: list[Child] = [
-                button_child("Pop instruction", message.PopInstruction()),
-                button_child("Line", message.AddLine()),
-                button_child("Curve", message.AddCurve()),
-                button_child("Blade off", message.BladeOff()),
-                button_child("Blade on", message.BladeOn()),
+                button_child(trb_size, "Pop instruction", message.PopInstruction()),
+                button_child(trb_size, "Line", message.AddLine()),
+                button_child(trb_size, "Curve", message.AddCurve()),
+                button_child(trb_size, "Blade off", message.BladeOff()),
+                button_child(trb_size, "Blade on", message.BladeOn()),
+                ]
+
+        brb_size = (300, 75)
+        self.bottom_right_buttons: list[Child] = [
+                button_child(brb_size, "Export", message.Export()),
+                button_child(brb_size, "Import", message.Import())
                 ]
 
         self.editor_frame = Child(EditorFrame((0, 0), model), (0, 0))
 
         self.children = []
         self.children += self.top_right_buttons
+        self.children += self.bottom_right_buttons
         self.children += [self.editor_frame]
 
         self.resize(size)
@@ -57,18 +64,27 @@ class Root(ClickableSurface):
 
         border_padding = 40
         button_padding = 10
-        button_y = border_padding - button_padding
+        tr_button_y = border_padding - button_padding
+        br_button_y = new_height - border_padding - button_padding
         max_button_width = max([b.get_width() for b in self.top_right_buttons])
 
         editor_frame_padding = 40
 
         for child in self.children:
             if child in self.top_right_buttons:
-                button_y += button_padding
+                tr_button_y += button_padding
                 w, h = child.get_size()
                 child.x = new_width - w - border_padding
-                child.y = button_y
-                button_y += h
+                child.y = tr_button_y
+                tr_button_y += h
+
+            if child in self.bottom_right_buttons:
+                w, h = child.get_size()
+                br_button_y -= h
+                child.x = new_width - w - border_padding
+                child.y = br_button_y
+                br_button_y -= button_padding
+
             if child is self.editor_frame:
                 frame_size = (new_width
                               - border_padding * 2
@@ -318,7 +334,7 @@ class EditorFrame(ClickableSurface):
 
 if __name__ == "__main__":
     pg.init()
-    screen = pg.display.set_mode((1280, 720))
+    screen = pg.display.set_mode((1600, 900))
     font = pg.font.SysFont(None, 32)
 
     screen_size = (screen.get_width(), screen.get_height())
