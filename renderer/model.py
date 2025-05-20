@@ -1,5 +1,9 @@
 import message
-from instruction import Line, CubicBezier, BladeOn, BladeOff
+from instruction import Line, CubicBezier, BladeOn, BladeOff, \
+    to_json_value, from_json_value
+
+from json import dump, load
+from math import tau
 
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
@@ -75,9 +79,28 @@ class InstructionBuilderModel:
         return (0, 0)
 
     def export_instructions(self):
-        filepath = str(asksaveasfilename())
-        print(filepath)
+        result = asksaveasfilename()
+        if not isinstance(result, str):
+            return
+        filepath = str(result)
+        obj = {}
+        obj['wheel_distance'] = 1.28
+        obj['wheel_radius'] = 0.2
+        obj['max_motor_speed'] = 5.0 * tau
+        obj['sim_length'] = "Indefinite"
+        obj['delta_time'] = {"secs": 0, "nanos": 1000000}
+        obj['instructions'] = [to_json_value(i) for i in self.instructions]
+        with open(filepath, "w") as f:
+            dump(obj, f)
 
     def import_instructions(self):
-        filepath = str(askopenfilename())
-        print(filepath)
+        result = askopenfilename()
+        if not isinstance(result, str):
+            return
+        filepath = str(result)
+        with open(filepath, "r") as f:
+            obj = dict(load(f))
+
+        if "instructions" in obj.keys():
+            obj_list = obj["instructions"]
+            self.instructions = [from_json_value(o) for o in obj_list]
