@@ -29,14 +29,16 @@ class SimOutput:
         self.wheel_distance: float = obj["wheel_distance"]
         self.wheel_radius: float = obj["wheel_radius"]
         self.max_motor_speed: float = obj["max_motor_speed"]
+        self.blade_radius: float = obj["max_motor_speed"]
 
 
-path = "../simulation/tests/basic_goto.sim"
+path = "../../simulation/out.sim"
 with open(path, 'r') as file:
     json_str = file.read()
 sim_output = SimOutput(json.loads(json_str))
 sim_dt = sim_output.delta_time
 states = sim_output.states
+blade_radius = sim_output.blade_radius
 
 
 SCREEN_WIDTH = 1280
@@ -141,7 +143,7 @@ while not quit:
                 pg.draw.circle(world_surface,
                                (48, 49, 31),
                                worldcoords(x, y),
-                               robot_sprite.get_width() / 2.5)
+                               blade_radius)
 
         state: SimState = states[state_index]
         radians = state.robot_theta

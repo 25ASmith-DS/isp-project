@@ -7,6 +7,8 @@ from math import tau
 
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
+blade_radius = 0.25
+
 
 class InstructionBuilderModel:
     def __init__(self):
@@ -78,18 +80,23 @@ class InstructionBuilderModel:
             i -= 1
         return (0, 0)
 
+    def sim_dict(self):
+        obj = {}
+        obj['wheel_distance'] = 0.70
+        obj['wheel_radius'] = 0.2
+        obj['max_motor_speed'] = 5.0 * tau
+        obj['blade_radius'] = blade_radius
+        obj['sim_length'] = "Indefinite"
+        obj['delta_time'] = {"secs": 0, "nanos": 1000000}
+        obj['instructions'] = [to_json_value(i) for i in self.instructions]
+        return obj
+
     def export_instructions(self):
         result = asksaveasfilename()
         if not isinstance(result, str):
             return
         filepath = str(result)
-        obj = {}
-        obj['wheel_distance'] = 1.28
-        obj['wheel_radius'] = 0.2
-        obj['max_motor_speed'] = 5.0 * tau
-        obj['sim_length'] = "Indefinite"
-        obj['delta_time'] = {"secs": 0, "nanos": 1000000}
-        obj['instructions'] = [to_json_value(i) for i in self.instructions]
+        obj = self.sim_dict()
         with open(filepath, "w") as f:
             dump(obj, f)
 

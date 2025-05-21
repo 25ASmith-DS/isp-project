@@ -2,8 +2,9 @@ import pygame as pg
 from elements import click_children, raise_children, \
                      move_children, Child, ClickableSurface
 from instruction import Line, CubicBezier, BladeOn, BladeOff
-from model import InstructionBuilderModel
+from model import InstructionBuilderModel, blade_radius
 import message
+from math import ceil
 
 
 def distance_squared(p0, p1):
@@ -148,14 +149,17 @@ class EventEmitterButton(ClickableSurface):
 class EditorFrame(ClickableSurface):
     def __init__(self, size: tuple[int, int], model: InstructionBuilderModel):
         self.surface = None
+        self.cut_surface = None
+        self.nodes_surface = None
+        self.text_surface = None
         self.model = model
 
-        self.bg = (80, 73, 69)                      # #504945
-        self.fg = (235, 219, 178)                   # #EBDBB2
-        self.line_color_blade_on = (251, 73, 52)    # #FB4934
-        self.line_color_blade_off = (138, 41, 20)   # #8B2914
-        self.line_color_selected = (184, 167, 38)   # #B8BB26
-
+        self.bg = (80, 73, 69, 255)                      # #504945
+        self.fg = (235, 219, 178, 255)                   # #EBDBB2
+        self.line_color_blade_on = (251, 73, 52, 255)    # #FB4934
+        self.line_color_blade_off = (138, 41, 20, 255)   # #8B2914
+        self.line_color_selected = (184, 167, 38, 255)   # #B8BB26
+        self.cut_color = (58, 72, 24, 255)               # #3A4818
         self.world_width = self.world_height = 0
         self.world_scale = 0
 
@@ -169,6 +173,9 @@ class EditorFrame(ClickableSurface):
 
     def update(self) -> pg.Surface:
         self.surface.fill(self.bg)
+        self.text_surface.fill((0, 0, 0, 0))
+        self.cut_surface.fill((0, 0, 0, 0))
+        self.nodes_surface.fill((0, 0, 0, 0))
 
         instructions = self.model.instructions
         length = len(instructions)
@@ -184,26 +191,52 @@ class EditorFrame(ClickableSurface):
                 line_color = self.line_color_blade_off
 
             if isinstance(instruction, Line):
-                pg.draw.line(self.surface,
+                if blade_on:
+                    line_length = distance_squared(instruction.start,
+                                                   instruction.end) ** 0.5
+                    cut_steps = ceil(2 * line_length / blade_radius)
+                    cut_steps = 100
+                    cut_radius = blade_radius * self.world_scale
+                    for i in range(cut_steps + 1):
+                        t = i / cut_steps
+                        pg.draw.circle(self.cut_surface,
+                                       self.cut_color,
+                                       self.screencoords(instruction.point_on(t)),
+                                       cut_radius)
+
+                pg.draw.line(self.nodes_surface,
                              line_color,
                              self.screencoords(instruction.end),
                              self.screencoords(instruction.start),
                              self.line_width)
                 for p in [instruction.start, instruction.end]:
-                    pg.draw.circle(self.surface,
+                    pg.draw.circle(self.nodes_surface,
                                    line_color,
                                    self.screencoords(p),
                                    self.point_radius)
             if isinstance(instruction, CubicBezier):
+                if blade_on:
+                    line_length = distance_squared(instruction.p0,
+                                                   instruction.p3) ** 0.5
+                    cut_steps = ceil(2 * line_length / blade_radius)
+                    cut_steps = 100
+                    cut_radius = blade_radius * self.world_scale
+                    for i in range(cut_steps + 1):
+                        t = i / cut_steps
+                        pg.draw.circle(self.cut_surface,
+                                       self.cut_color,
+                                       self.screencoords(instruction.point_on(t)),
+                                       cut_radius)
+
                 ts = [i / bezier_steps for i in range(bezier_steps + 1)]
                 ps = [instruction.point_on(t) for t in ts]
                 sps = [self.screencoords(p) for p in ps]
                 for i in range(bezier_steps):
-                    pg.draw.line(self.surface,
+                    pg.draw.line(self.nodes_surface,
                                  line_color,
                                  sps[i], sps[i + 1],
                                  width=self.line_width)
-                pg.draw.circle(self.surface,
+                pg.draw.circle(self.nodes_surface,
                                line_color,
                                self.screencoords(instruction.p3),
                                self.point_radius)
@@ -215,68 +248,96 @@ class EditorFrame(ClickableSurface):
         if length > 0:
             selected = instructions[length - 1]
             if isinstance(selected, Line):
-                pg.draw.line(self.surface,
+                if blade_on:
+                    line_length = distance_squared(selected.start,
+                                                   selected.end) ** 0.5
+                    cut_steps = ceil(2 * line_length / blade_radius)
+                    cut_steps = 100
+                    cut_radius = blade_radius * self.world_scale
+                    for i in range(cut_steps + 1):
+                        t = i / cut_steps
+                        pg.draw.circle(self.cut_surface,
+                                       self.cut_color,
+                                       self.screencoords(selected.point_on(t)),
+                                       cut_radius)
+                pg.draw.line(self.nodes_surface,
                              self.line_color_selected,
                              self.screencoords(selected.end),
                              self.screencoords(selected.start),
                              self.line_width)
-                pg.draw.circle(self.surface,
+                pg.draw.circle(self.nodes_surface,
                                self.line_color_selected,
                                self.screencoords(selected.start),
                                self.point_radius)
-                pg.draw.circle(self.surface,
+                pg.draw.circle(self.nodes_surface,
                                self.line_color_selected,
                                self.screencoords(selected.end),
                                self.point_radius_selected)
 
                 d = distance_squared(selected.start, selected.end) ** 0.5
                 text = font.render(f"Dist: {round(d, 3)}", True, self.fg)
-                self.surface.blit(text, (0, 30))
+                self.text_surface.blit(text, (0, 30))
             if isinstance(selected, CubicBezier):
+                if blade_on:
+                    line_length = distance_squared(selected.p0,
+                                                   selected.p3) ** 0.5
+                    cut_steps = ceil(2 * line_length / blade_radius)
+                    cut_steps = 100
+                    cut_radius = blade_radius * self.world_scale
+                    for i in range(cut_steps + 1):
+                        t = i / cut_steps
+                        pg.draw.circle(self.cut_surface,
+                                       self.cut_color,
+                                       self.screencoords(selected.point_on(t)),
+                                       cut_radius)
+
                 ts = [i / bezier_steps for i in range(bezier_steps + 1)]
                 ps = [selected.point_on(t) for t in ts]
                 sps = [self.screencoords(p) for p in ps]
                 for i in range(bezier_steps):
-                    pg.draw.line(self.surface,
+                    pg.draw.line(self.nodes_surface,
                                  self.line_color_selected,
                                  sps[i], sps[i + 1],
                                  width=self.line_width)
-                pg.draw.line(self.surface,
+                pg.draw.line(self.nodes_surface,
                              self.line_color_selected,
                              self.screencoords(selected.p0),
                              self.screencoords(selected.p1),
                              width=round(self.line_width/2))
-                pg.draw.line(self.surface,
+                pg.draw.line(self.nodes_surface,
                              self.line_color_selected,
                              self.screencoords(selected.p2),
                              self.screencoords(selected.p3),
                              width=round(self.line_width/2))
                 for p in [selected.p1, selected.p2, selected.p3]:
-                    pg.draw.circle(self.surface,
+                    pg.draw.circle(self.nodes_surface,
                                    self.line_color_selected,
                                    self.screencoords(p),
                                    self.point_radius_selected)
                 d = distance_squared(selected.p0, selected.p3) ** 0.5
                 text = font.render(f"Dist: {round(d, 3)}", True, self.fg)
-                self.surface.blit(text, (0, 30))
+                self.text_surface.blit(text, (0, 30))
 
             if isinstance(selected, BladeOn):
                 blade_on = True
-                pg.draw.circle(self.surface,
+                pg.draw.circle(self.nodes_surface,
                                self.line_color_selected,
                                self.screencoords(self.model.end_point()),
                                self.point_radius_selected)
             if isinstance(selected, BladeOff):
                 blade_on = False
-                pg.draw.circle(self.surface,
+                pg.draw.circle(self.nodes_surface,
                                self.line_color_selected,
                                self.screencoords(self.model.end_point()),
                                self.point_radius_selected)
 
         text = font.render("Blade ON" if blade_on else "Blade OFF",
                            True, self.fg)
-        self.surface.blit(text, (0, 0))
+        self.text_surface.blit(text, (0, 0))
 
+        self.surface.blit(self.cut_surface, (0, 0))
+        self.surface.blit(self.nodes_surface, (0, 0))
+        self.surface.blit(self.text_surface, (0, 0))
         return self.surface
 
     def on_click(self, pos: tuple[int, int], button: int):
@@ -314,6 +375,9 @@ class EditorFrame(ClickableSurface):
         self.point_radius = round(self.world_scale * (1/15))
         self.point_radius_selected = round(self.world_scale * (1/8))
 
+        self.cut_surface = pg.Surface(new_size, flags=pg.SRCALPHA)
+        self.nodes_surface = pg.Surface(new_size, flags=pg.SRCALPHA)
+        self.text_surface = pg.Surface(new_size, flags=pg.SRCALPHA)
         self.surface = pg.Surface(new_size)
 
     def get_size(self) -> tuple[int, int]:

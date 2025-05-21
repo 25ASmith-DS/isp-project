@@ -1,5 +1,3 @@
-import json
-
 
 class BladeOn:
     pass
@@ -13,6 +11,10 @@ class Line:
     def __init__(self, start, end):
         self.start = (float(start[0]), float(start[1]))
         self.end = (float(end[0]), float(end[1]))
+
+    def point_on(self, t):
+        return ((1-t) * self.start[0] + t * self.end[0],
+                (1-t) * self.start[1] + t * self.end[1])
 
 
 class CubicBezier:
