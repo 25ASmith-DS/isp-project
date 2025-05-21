@@ -21,6 +21,8 @@ pub struct SimOutput {
 	pub wheel_radius: f64,
 	/// Unit: meters
 	pub max_motor_speed: f64,
+	/// Unit: meters
+	pub blade_radius: f64,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -34,6 +36,8 @@ pub struct SimInput {
 	pub wheel_radius: f64,
 	/// Unit: meters
 	pub max_motor_speed: f64,
+	/// Unit: meters
+	pub blade_radius: f64,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -66,6 +70,7 @@ pub fn run_simulation(
 		wheel_distance,
 		wheel_radius,
 		max_motor_speed,
+        blade_radius,
 	}: SimInput,
 ) -> SimOutput {
 	let (mut sim, debug) = RobotSimulation::initialize(&instructions);
@@ -155,5 +160,6 @@ pub fn run_simulation(
 		wheel_distance,
 		wheel_radius,
 		max_motor_speed,
+        blade_radius,
 	}
 }
