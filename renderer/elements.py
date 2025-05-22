@@ -100,5 +100,5 @@ def move_children(children: list[Child], pos) -> bool:
     for child in children:
         if child.collide_point(pos):
             child.surface.on_move((x - child.x, y - child.y))
-            return True
+            return child
     return False

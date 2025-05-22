@@ -1,5 +1,6 @@
 
 simulation/target/
 simulation/tests/
+simulation/paths/
 
 renderer/__pycache__/

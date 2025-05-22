@@ -29,7 +29,7 @@ class SimOutput:
         self.wheel_distance: float = obj["wheel_distance"]
         self.wheel_radius: float = obj["wheel_radius"]
         self.max_motor_speed: float = obj["max_motor_speed"]
-        self.blade_radius: float = obj["max_motor_speed"]
+        self.blade_radius: float = obj["blade_radius"]
 
 
 path = "../../simulation/out.sim"
@@ -40,6 +40,7 @@ sim_dt = sim_output.delta_time
 states = sim_output.states
 blade_radius = sim_output.blade_radius
 
+print(blade_radius)
 
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 960
@@ -55,7 +56,7 @@ pg.init()
 screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 font = pg.font.Font(pg.font.get_default_font(), floor(SCREEN_HEIGHT / 40))
-robot_sprite = pg.image.load("robot.png")
+robot_sprite = pg.image.load("robotDS.png")
 robot_sprite_size = (sim_output.wheel_distance * WORLD_SCALE,
                      sim_output.wheel_distance * WORLD_SCALE
                      * robot_sprite.get_height() / robot_sprite.get_width())
@@ -143,7 +144,7 @@ while not quit:
                 pg.draw.circle(world_surface,
                                (48, 49, 31),
                                worldcoords(x, y),
-                               blade_radius)
+                               blade_radius * WORLD_SCALE)
 
         state: SimState = states[state_index]
         radians = state.robot_theta
